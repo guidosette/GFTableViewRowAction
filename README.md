@@ -1,14 +1,28 @@
 # GFTableViewRowAction
 Custom TableViewRowAction
 
-![Alt Text](https://github.com/guidosette/UIBarButtonItem-ItemBadge/blob/master/example.gif)
+![Alt Text](https://github.com/guidosette/GFTableViewRowAction/blob/master/example.gif)
 
 How to use:
-- import UIBarButtonItem+ItemBadge.h and UIBarButtonItem+ItemBadge.m
-- add #import "UIBarButtonItem+ItemBadge.h" in ViewController
+- add #import "GFTableViewRowAction.h" in TableViewController
 
 <br />
 Example:
 <br />
-UIBarButtonItem *notificationItem = self.navigationItem.rightBarButtonItems[0];
-[notificationItem setCustomBadge:[NSString stringWithFormat:@"%d", 2]];
+// custom UITableViewRowAction
+- (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
+float heightCell = [self tableView:tableView heightForRowAtIndexPath:indexPath];
+
+GFTableViewRowAction* actionDelete = [GFTableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"Delete" textColor:[UIColor redColor] backgroundColor:[UIColor whiteColor] icon:[UIImage imageNamed:@"delete"] heightCell:heightCell handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
+NSLog(@"Delete action");
+[data removeObjectAtIndex:indexPath.row];
+[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+}];
+
+GFTableViewRowAction* actionAttach = [GFTableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"Attach" textColor:[UIColor blueColor] backgroundColor:[UIColor greenColor] icon:[UIImage imageNamed:@"attach"] heightCell:heightCell handler:^(UITableViewRowAction *action, NSIndexPath *indexPath) {
+NSLog(@"Attach action");
+}];
+
+return @[actionDelete, actionAttach];
+}
+
